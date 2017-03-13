@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="log"
+            type="com.example.azadljy.logcat_for_shoppler.model.LogModel" />
+
+        <variable
+            name="isDisplayTime"
+            type="boolean" />
+        <import type="android.view.View" />
+        <import type="android.graphics.Color" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/log_time"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:gravity="center_vertical"
+            android:text="@{log.logTime}"
+            android:visibility="@{isDisplayTime?View.VISIBLE:View.GONE}" />
+
+        <TextView
+            android:id="@+id/log_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@{log.error?Color.RED:Color.BLACK}"
+            android:text="@{log.logContent}"
+            android:textSize="15sp" />
+    </LinearLayout>
+</layout>
