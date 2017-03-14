@@ -1,31 +1,14 @@
 package com.example.azadljy.logcat_for_shoppler;
 
-import android.database.DatabaseUtils;
 import android.databinding.DataBindingUtil;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.example.azadljy.logcat_for_shoppler.adapter.LogAdapter;
 import com.example.azadljy.logcat_for_shoppler.databinding.ActivityLogBinding;
 import com.example.azadljy.logcat_for_shoppler.model.ClickEvent;
-import com.example.azadljy.logcat_for_shoppler.model.LogModel;
-import com.github.clans.fab.FloatingActionMenu;
-import com.melnykov.fab.FloatingActionButton;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 作者：Ljy on 2017/2/24.

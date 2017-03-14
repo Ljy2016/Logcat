@@ -22,18 +22,13 @@ import java.util.List;
 
 public abstract class LogAdapter extends RecyclerView.Adapter<LogViewHolder> {
 
+    private List<LogModel> logModels;
     List<LogitemBinding> logitemBindings;
 
-    public List<LogModel> getLogModels() {
-        return logModels;
-    }
-
-    private List<LogModel> logModels;
-
-    public LogAdapter(List<LogModel> newLogModels) {
+    public LogAdapter(List<LogModel> logModels) {
         logitemBindings = new ArrayList<>();
-        logModels = new ArrayList<>();
-        logModels.addAll(newLogModels);
+        this.logModels = logModels;
+
     }
 
     @Override
@@ -47,7 +42,7 @@ public abstract class LogAdapter extends RecyclerView.Adapter<LogViewHolder> {
 
     @Override
     public void onBindViewHolder(LogViewHolder holder, int position) {
-        LogModel logModel = getModel(position);
+        LogModel logModel = logModels.get(position);
         holder.bind(logModel);
     }
 
@@ -56,10 +51,6 @@ public abstract class LogAdapter extends RecyclerView.Adapter<LogViewHolder> {
         return setItemViewType(position);
     }
 
-    //从外部获得数据
-    public LogModel getModel(int position) {
-        return logModels.get(position);
-    }
 
     //获得item的布局
     public abstract int setItemViewType(int position);

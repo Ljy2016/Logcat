@@ -161,25 +161,27 @@ public class ClickEvent {
                         isRunning = true;
                         synchronized (isRunning) {
                             while ((line = bufferedReader.readLine()) != null && isRunning) {
-//                            String time = line.substring(6, 14);
+//                              String time = line.substring(6, 14);
                                 LogModel model = new LogModel();
-//                            model.setLogTime(time);
-//                            model.setLogContent(line.substring(line.indexOf("):") + 2));
+//                              model.setLogTime(time);
+//                              model.setLogContent(line.substring(line.indexOf("):") + 2));
                                 model.setLogContent(line);
                                 if (line.contains("异常信息")) {
                                     model.setError(true);
                                 }
-//                                logModels.add(model);
-//                                final LogModelDiffCallback diffCallback = new LogModelDiffCallback(adapter.getLogModels(), logModels);
-//                                final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
-//                                adapter.getLogModels().clear();
-//                                adapter.getLogModels().addAll(logModels);
-//                                context.runOnUiThread(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        diffResult.dispatchUpdatesTo(adapter);
-//                                    }
-//                                });
+                                logModels.add(model);
+//                              final LogModelDiffCallback diffCallback = new LogModelDiffCallback(adapter.getLogModels(), logModels);
+//                              final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+//                              adapter.getLogModels().clear();
+//                              adapter.getLogModels().addAll(logModels);
+
+                                context.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        adapter.notifyItemInserted(logModels.size() - 1);
+//                                      diffResult.dispatchUpdatesTo(adapter);
+                                    }
+                                });
                             }
                         }
                         Log.e("TAG", "startLog：不符合运行条件 ");
@@ -246,7 +248,6 @@ public class ClickEvent {
     public void changeLog(View view) {
         isRunning = false;
         logCommand = "logcat -v time";
-
     }
 
 }
