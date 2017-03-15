@@ -20,6 +20,24 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/animation_view"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:background="#333333"
+                    app:lottie_fileName="search_button.json" />
+            </LinearLayout>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rl_showlog"
                 android:layout_width="match_parent"
@@ -28,7 +46,8 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/tv_showlog"
                 android:layout_marginTop="13dp"
-                android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
+                android:scrollbars="vertical"
+                android:visibility="gone"></android.support.v7.widget.RecyclerView>
 
 
             <com.github.clans.fab.FloatingActionMenu
@@ -77,7 +96,6 @@
                     android:src="@drawable/ic_menu"
                     fab:fab_label="清空日志"
                     fab:fab_size="mini" />
-
             </com.github.clans.fab.FloatingActionMenu>
         </FrameLayout>
     </RelativeLayout>

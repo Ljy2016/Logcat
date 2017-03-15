@@ -75,12 +75,10 @@ public abstract class LogAdapter extends RecyclerView.Adapter<LogViewHolder> {
 
     //设置是否显示日志的时间信息
     public void setDispalyLogTime(boolean dispalyLogTime) {
-
         for (LogitemBinding binding : logitemBindings) {
             if (binding != null) {
                 binding.setIsDisplayTime(dispalyLogTime);
             }
         }
-
     }
 }

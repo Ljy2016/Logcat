@@ -1,1 +1,1 @@
-include ':sample', ':logcat'
+include ':sample', ':logcat', ':nice-spinner-master'
