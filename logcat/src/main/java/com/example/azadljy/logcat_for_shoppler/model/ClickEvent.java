@@ -143,7 +143,6 @@ public class ClickEvent {
      * @param view
      */
     public void startLogByThread(View view) {
-
         if (!isRunning && adapter != null) {
             new Thread(new Runnable() {
 

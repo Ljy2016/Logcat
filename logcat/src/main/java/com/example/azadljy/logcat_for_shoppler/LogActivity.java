@@ -21,7 +21,6 @@ import com.example.azadljy.logcat_for_shoppler.model.ClickEvent;
 public class LogActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private LogAdapter adapter;
-    private LottieAnimationView animationView;
     boolean isDisplayLogTime;
     ClickEvent clickEvent;
 
@@ -31,14 +30,6 @@ public class LogActivity extends AppCompatActivity {
         setContentView(R.layout.activity_log);
         ActivityLogBinding logBinding = DataBindingUtil.setContentView(this, R.layout.activity_log);
         recyclerView = (RecyclerView) findViewById(R.id.rl_showlog);
-        animationView = (LottieAnimationView) findViewById(R.id.animation_view);
-        animationView.setProgress(0.5f);
-        animationView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                animationView.playAnimation();
-            }
-        });
         clickEvent = new ClickEvent(recyclerView, this);
         adapter = clickEvent.getAdapter();
         logBinding.setClickEvent(clickEvent);
@@ -53,9 +44,4 @@ public class LogActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-
-//    @Override
-//    public void onBackPressed() {
-//        Toast.makeText(this, "返回键暂时会有问题，home键退出", Toast.LENGTH_SHORT).show();
-//    }
 }
