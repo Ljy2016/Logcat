@@ -5,7 +5,7 @@
 
         <variable
             name="log"
-            type="com.example.azadljy.logcat_for_shoppler.model.LogModel" />
+            type="com.example.azadljy.logcatutil.model.LogModel" />
 
         <variable
             name="isDisplayTime"

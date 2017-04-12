@@ -1,4 +1,4 @@
-package com.example.azadljy.logcat_for_shoppler.model;
+package com.example.azadljy.logcatutil.model;
 
 /**
  * 作者：Ljy on 2017/2/28.

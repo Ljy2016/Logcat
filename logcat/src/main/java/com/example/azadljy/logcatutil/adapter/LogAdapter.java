@@ -1,14 +1,13 @@
-package com.example.azadljy.logcat_for_shoppler.adapter;
+package com.example.azadljy.logcatutil.adapter;
 
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
-import com.example.azadljy.logcat_for_shoppler.databinding.LogitemBinding;
-import com.example.azadljy.logcat_for_shoppler.model.LogModel;
+import com.example.azadljy.logcatutil.databinding.LogitemBinding;
+import com.example.azadljy.logcatutil.model.LogModel;
 
 import android.support.v7.util.DiffUtil;
 

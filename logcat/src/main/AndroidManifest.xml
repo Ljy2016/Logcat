@@ -1,12 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.azadljy.logcat_for_shoppler">
+    package="com.example.azadljy.logcatutil">
 
     <application
         android:allowBackup="true"
         android:label="@string/app_name"
         android:supportsRtl="true">
         <activity
-            android:name=".LogActivity"
+            android:name="com.example.azadljy.logcatutil.LogActivity"
             android:icon="@mipmap/ic_con"
             android:label="log"
             android:launchMode="singleInstance">

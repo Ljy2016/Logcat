@@ -1,16 +1,14 @@
-package com.example.azadljy.logcat_for_shoppler;
+package com.example.azadljy.logcatutil;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
-import com.airbnb.lottie.LottieAnimationView;
-import com.example.azadljy.logcat_for_shoppler.adapter.LogAdapter;
-import com.example.azadljy.logcat_for_shoppler.databinding.ActivityLogBinding;
-import com.example.azadljy.logcat_for_shoppler.model.ClickEvent;
+import com.example.azadljy.logcatutil.adapter.LogAdapter;
+import com.example.azadljy.logcatutil.databinding.ActivityLogBinding;
+import com.example.azadljy.logcatutil.model.ClickEvent;
 
 
 /**

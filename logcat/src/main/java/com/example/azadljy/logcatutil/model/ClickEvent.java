@@ -1,18 +1,13 @@
-package com.example.azadljy.logcat_for_shoppler.model;
+package com.example.azadljy.logcatutil.model;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
-import android.os.Looper;
-import android.support.v7.util.DiffUtil;
 import android.util.Log;
 import android.view.View;
 
-import com.example.azadljy.logcat_for_shoppler.LogException;
-import com.example.azadljy.logcat_for_shoppler.R;
-import com.example.azadljy.logcat_for_shoppler.adapter.LogAdapter;
-import com.example.azadljy.logcat_for_shoppler.adapter.LogModelDiffCallback;
+import com.example.azadljy.logcatutil.R;
+import com.example.azadljy.logcatutil.adapter.LogAdapter;
 
 import android.support.v7.widget.RecyclerView;
 

@@ -1,8 +1,8 @@
-package com.example.azadljy.logcat_for_shoppler.adapter;
+package com.example.azadljy.logcatutil.adapter;
 
 import android.support.v7.util.DiffUtil;
 
-import com.example.azadljy.logcat_for_shoppler.model.LogModel;
+import com.example.azadljy.logcatutil.model.LogModel;
 
 import java.util.List;
 
