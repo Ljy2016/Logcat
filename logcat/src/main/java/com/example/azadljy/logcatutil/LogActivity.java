@@ -34,6 +34,8 @@ public class LogActivity extends AppCompatActivity {
         adapter.setDispalyLogTime(isDisplayLogTime);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutAnimation(null);
+        recyclerView.setItemAnimator(null);
     }
 
     @Override
