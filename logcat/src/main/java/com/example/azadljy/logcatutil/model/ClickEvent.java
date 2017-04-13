@@ -34,6 +34,8 @@ public class ClickEvent {
     private AsyncTask task;
     private boolean isDisplayTime;
     private Activity context;
+    private boolean isCleared;
+    private boolean isWaiting;
     private String logCommand = "logcat -v raw";
 
     public String getLogCommand() {
@@ -145,7 +147,7 @@ public class ClickEvent {
                 public void run() {
                     try {
                         //创建process，传入命令，打印所需要的日志信息
-//                        Process process = Runtime.getRuntime().exec("logcat -v time  HttpRequest:E *:S ");
+//                      Process process = Runtime.getRuntime().exec("logcat -v time  HttpRequest:E *:S ");
                         Process process = Runtime.getRuntime().exec(logCommand);
                         InputStream is = process.getInputStream();
                         InputStreamReader reader = new InputStreamReader(is);
@@ -168,12 +170,16 @@ public class ClickEvent {
 //                              final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
 //                              adapter.getLogModels().clear();
 //                              adapter.getLogModels().addAll(logModels);
-
                                 context.runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        adapter.notifyItemInserted(logModels.size() - 1);
-//                                      diffResult.dispatchUpdatesTo(adapter);
+                                        if (isCleared ) {
+                                            logModels.clear();
+                                            adapter.notifyDataSetChanged();
+                                            isCleared = false;
+                                        } else if (!isWaiting) {
+                                            adapter.notifyItemInserted(logModels.size() - 1);
+                                        }
                                     }
                                 });
                             }
@@ -228,13 +234,7 @@ public class ClickEvent {
     //清空日志
     public void clearLog(View view) {
         if (logModels.size() > 0) {
-            logModels.clear();
-            context.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    adapter.notifyDataSetChanged();
-                }
-            });
+            isCleared = true;
         }
     }
 
