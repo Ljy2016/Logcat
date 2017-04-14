@@ -14,7 +14,6 @@ import com.example.azadljy.logcatutil.model.LogModel;
 public class LogViewHolder extends RecyclerView.ViewHolder {
 
     private final LogitemBinding binding;
-
     public LogViewHolder(LogitemBinding binding) {
         super(binding.getRoot());
         this.binding = binding;

@@ -4,8 +4,8 @@
     <data>
 
         <variable
-            name="clickEvent"
-            type="com.example.azadljy.logcatutil.model.ClickEvent" />
+            name="logcatViewModel"
+            type="com.example.azadljy.logcatutil.model.LogcatViewModel" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -28,6 +28,7 @@
                 app:layout_scrollFlags="scroll|enterAlways|snap">
 
                 <Spinner
+                    android:id="@+id/sp_logType"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent">
 
@@ -66,7 +67,7 @@
 
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{clickEvent.startLogByThread}"
+                android:onClick="@{logcatViewModel.startLogByThread}"
                 android:src="@drawable/ic_star"
                 fab:fab_label="启动日志"
                 fab:fab_size="mini" />
@@ -74,7 +75,6 @@
             <com.github.clans.fab.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{clickEvent.changeLog}"
                 android:src="@drawable/ic_edit"
                 fab:fab_label="显示时间"
                 fab:fab_size="mini" />
@@ -82,7 +82,7 @@
             <com.github.clans.fab.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{clickEvent.toTheBottom}"
+                android:onClick="@{logcatViewModel.toTheBottom}"
                 android:src="@drawable/ic_menu"
                 fab:fab_label="去往底部"
                 fab:fab_size="mini" />
@@ -90,7 +90,7 @@
             <com.github.clans.fab.FloatingActionButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{clickEvent.clearLog}"
+                android:onClick="@{logcatViewModel.clearLog}"
                 android:src="@drawable/ic_menu"
                 fab:fab_label="清空日志"
                 fab:fab_size="mini" />

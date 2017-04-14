@@ -5,10 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Spinner;
 
 import com.example.azadljy.logcatutil.adapter.LogAdapter;
 import com.example.azadljy.logcatutil.databinding.ActivityLogBinding;
-import com.example.azadljy.logcatutil.model.ClickEvent;
+import com.example.azadljy.logcatutil.model.LogcatViewModel;
 
 
 /**
@@ -19,8 +20,9 @@ import com.example.azadljy.logcatutil.model.ClickEvent;
 public class LogActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private LogAdapter adapter;
+    private Spinner spinner;
     boolean isDisplayLogTime;
-    ClickEvent clickEvent;
+    LogcatViewModel logcatViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -28,9 +30,10 @@ public class LogActivity extends AppCompatActivity {
         setContentView(R.layout.activity_log);
         ActivityLogBinding logBinding = DataBindingUtil.setContentView(this, R.layout.activity_log);
         recyclerView = (RecyclerView) findViewById(R.id.rl_showlog);
-        clickEvent = new ClickEvent(recyclerView, this);
-        adapter = clickEvent.getAdapter();
-        logBinding.setClickEvent(clickEvent);
+        spinner = (Spinner) findViewById(R.id.sp_logType);
+        logcatViewModel = new LogcatViewModel(recyclerView, this, spinner);
+        adapter = logcatViewModel.getAdapter();
+        logBinding.setLogcatViewModel(logcatViewModel);
         adapter.setDispalyLogTime(isDisplayLogTime);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -40,7 +43,7 @@ public class LogActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        ClickEvent.isRunning = false;
+        LogcatViewModel.isRunning = false;
         super.onDestroy();
     }
 
