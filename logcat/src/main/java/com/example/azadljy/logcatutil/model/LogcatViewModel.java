@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -46,11 +48,15 @@ public class LogcatViewModel {
     private LogAdapter adapter;
     private Handler handler;
     private Map<String, String> commandInfo;
+    private ExecutorService singleThreadExecutor;
+    private LogThread logThread;
 
     public LogcatViewModel(RecyclerView recyclerView, Activity context, Spinner spinner) {
         logModels = new ArrayList<>();
         spinnerList = new ArrayList<>();
         commandInfo = new HashMap<>();
+        singleThreadExecutor = Executors.newSingleThreadExecutor();
+        //加入基础命令
         spinnerList.add("Verbose");
         spinnerList.add("Debug");
         spinnerList.add("Info");
@@ -67,136 +73,12 @@ public class LogcatViewModel {
         loadDataForSpinner(spinner);
     }
 
-    /**
-     * AsyncTask不能重复执行，即使调用cancle也可能不会立即停止
-     * 导致退出后，再次执行会无效，同时也会导致内存溢出
-     *
-     * @param view
-     */
-    public void startLogByAsyncTask(View view) {
-        if (!isRunning && adapter != null) {
-
-            isRunning = true;
-            Log.e("TAG", "startLog:开始 ");
-            task = new AsyncTask<Void, String, Void>() {
-                @Override
-                protected Void doInBackground(Void... params) {
-                    try {
-                        //创建process，传入命令，打印所需要的日志信息
-//                        Process process = Runtime.getRuntime().exec("logcat -v time  HttpRequest:E *:S ");
-                        Process process = Runtime.getRuntime().exec(logCommand);
-                        InputStream is = process.getInputStream();
-                        InputStreamReader reader = new InputStreamReader(is);
-                        BufferedReader bufferedReader = new BufferedReader(reader);
-                        String line;
-                        Log.e("TAG", "startLog:准备输出日志 ");
-                        while ((line = bufferedReader.readLine()) != null && isRunning) {
-                            publishProgress(line);
-                        }
-                        Log.e("TAG", "startLog：不符合运行条件 ");
-                        if (bufferedReader != null) {
-                            bufferedReader.close();
-                        }
-                        if (reader != null) {
-                            reader.close();
-                        }
-                        if (is != null) {
-                            is.close();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Log.e("TAG", "startLog：异常 " + e.getMessage());
-                    }
-                    return null;
-                }
-
-                @Override
-                protected void onProgressUpdate(String... values) {
-                    String line = values[0];
-                    //根据传来的日志获取时间，须对应格式，普适性不强
-//                    String time = line.substring(6, 14);
-                    LogModel model = new LogModel();
-//                    model.setLogTime(time);
-                    model.setLogContent(line);
-                    if (line.contains("异常信息")) {
-                        model.setError(true);
-                    }
-                    logModels.add(model);
-                    adapter.notifyDataSetChanged();
-                    //recyclerView.smoothScrollToPosition(logModels.size()-1);
-                }
-            }.execute();
+    public void startShowLog() {
+        if (null != logThread) {
+            logThread.interrupt();
         }
-    }
-
-    //取消asyncTask，但是当onProgressUpdate有任务执行的时候，不会立即停下来，暂时废弃asyncTask
-    public void cancleTask() {
-        if (task != null) {
-            task.cancel(true);
-        }
-    }
-
-    /**
-     * 新开线程，调用runOnUiThread方法与主线程通信
-     * 暂时还好
-     *
-     * @param view
-     */
-    public void startLogByThread(View view) {
-        if (!isRunning && adapter != null) {
-            new Thread(new Runnable() {
-
-                @Override
-                public void run() {
-                    try {
-                        //创建process，传入命令，打印所需要的日志信息
-//                      Process process = Runtime.getRuntime().exec("logcat -v time  HttpRequest:E *:S ");
-                        Process process = Runtime.getRuntime().exec(logCommand);
-                        InputStream is = process.getInputStream();
-                        InputStreamReader reader = new InputStreamReader(is);
-                        BufferedReader bufferedReader = new BufferedReader(reader);
-                        String line;
-                        Log.e("TAG", "startLog:准备输出日志 ");
-                        isRunning = true;
-                        synchronized (isRunning) {
-                            while ((line = bufferedReader.readLine()) != null && isRunning) {
-                                LogModel model = new LogModel();
-                                model.setLogContent(line);
-                                if (line.contains("异常信息")) {
-                                    model.setError(true);
-                                }
-                                logModels.add(model);
-                                context.runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if (isCleared) {
-                                            logModels.clear();
-                                            adapter.notifyDataSetChanged();
-                                            isCleared = false;
-                                        } else if (!isWaiting) {
-                                            adapter.notifyItemInserted(logModels.size() - 1);
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                        Log.e("TAG", "startLog：不符合运行条件 ");
-                        if (bufferedReader != null) {
-                            bufferedReader.close();
-                        }
-                        if (reader != null) {
-                            reader.close();
-                        }
-                        if (is != null) {
-                            is.close();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        Log.e("TAG", "startLog：异常 " + e.getMessage());
-                    }
-                }
-            }).start();
-        }
+        logThread = new LogThread(logCommand);
+        logThread.start();
     }
 
     //是否显示时间
@@ -235,10 +117,9 @@ public class LogcatViewModel {
 
 
     public void changeLog(String commandKey) {
-        isRunning = false;
         logCommand = commandInfo.get(commandKey);
         clearLog(null);
-        startLogByThread(null);
+        startShowLog();
     }
 
 
@@ -274,5 +155,62 @@ public class LogcatViewModel {
 
     public boolean isDisplayTime() {
         return isDisplayTime;
+    }
+
+    class LogThread extends Thread {
+        Process process;
+        InputStream is;
+        InputStreamReader reader;
+        BufferedReader bufferedReader;
+
+        public LogThread(String command) {
+            try {
+                process = Runtime.getRuntime().exec(command);
+                is = process.getInputStream();
+                reader = new InputStreamReader(is);
+                bufferedReader = new BufferedReader(reader);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void run() {
+            try {
+                //创建process，传入命令，打印所需要的日志信息
+                String line;
+                while ((line = bufferedReader.readLine()) != null && !isInterrupted()) {
+                    LogModel model = new LogModel();
+                    model.setLogContent(line);
+                    if (line.contains("异常信息")) {
+                        model.setError(true);
+                    }
+                    logModels.add(model);
+                    context.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (isCleared) {
+                                logModels.clear();
+                                adapter.notifyDataSetChanged();
+                                isCleared = false;
+                            } else {
+                                adapter.notifyItemInserted(logModels.size() - 1);
+                            }
+                        }
+                    });
+                }
+                if (bufferedReader != null) {
+                    bufferedReader.close();
+                }
+                if (reader != null) {
+                    reader.close();
+                }
+                if (is != null) {
+                    is.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
