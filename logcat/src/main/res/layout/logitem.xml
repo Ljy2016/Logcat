@@ -2,17 +2,10 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
-
         <variable
             name="log"
             type="com.example.azadljy.logcatutil.model.LogModel" />
-
-        <variable
-            name="isDisplayTime"
-            type="boolean" />
         <import type="android.view.View" />
-        <import type="android.graphics.Color" />
-
     </data>
 
     <LinearLayout
@@ -25,14 +18,15 @@
             android:layout_height="30dp"
             android:gravity="center_vertical"
             android:text="@{log.logTime}"
-            android:visibility="@{isDisplayTime?View.VISIBLE:View.GONE}" />
+            android:textColor="@{log.logColor}"
+            android:visibility="@{log.showTime?View.VISIBLE:View.GONE}" />
 
         <TextView
             android:id="@+id/log_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@{log.error?Color.RED:Color.BLACK}"
             android:text="@{log.logContent}"
+            android:textColor="@{log.logColor}"
             android:textSize="15sp" />
     </LinearLayout>
 </layout>

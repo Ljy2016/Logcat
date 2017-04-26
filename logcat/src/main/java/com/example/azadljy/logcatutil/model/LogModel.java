@@ -1,5 +1,7 @@
 package com.example.azadljy.logcatutil.model;
 
+import android.graphics.Color;
+
 /**
  * 作者：Ljy on 2017/2/28.
  * 邮箱：enjoy_azad@sina.com
@@ -8,8 +10,33 @@ package com.example.azadljy.logcatutil.model;
 public class LogModel {
     private String logTime;
     private String logContent;
-    private boolean isError;
+    /**
+     * Add a flag for this model
+     */
+    private boolean isSpecialInfo;
+    private boolean isShowTime;
+    private int logColor = Color.BLACK;
+    private int logTimeColor = Color.BLACK;
     private int id;
+
+    public int getLogColor() {
+        return logColor;
+    }
+
+    /**
+     * Set the log text color,default:"#000000"
+     *
+     * @param logColor
+     */
+    public void setLogColor(String logColor) {
+        try {
+            this.logColor = Color.parseColor(logColor);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            this.logColor = Color.BLACK;
+        }
+
+    }
 
     public int getId() {
         return id;
@@ -19,12 +46,12 @@ public class LogModel {
         this.id = id;
     }
 
-    public boolean isError() {
-        return isError;
+    public boolean isSpecialInfo() {
+        return isSpecialInfo;
     }
 
-    public void setError(boolean error) {
-        isError = error;
+    public void setSpecialInfo(boolean specialInfo) {
+        isSpecialInfo = specialInfo;
     }
 
 
@@ -42,6 +69,27 @@ public class LogModel {
 
     public void setLogTime(String logTime) {
         this.logTime = logTime;
+    }
+
+    public boolean isShowTime() {
+        return isShowTime;
+    }
+
+    public void setShowTime(boolean showTime) {
+        isShowTime = showTime;
+    }
+
+    public int getLogTimeColor() {
+        return logTimeColor;
+    }
+
+    public void setLogTimeColor(String logTimeColor) {
+        try {
+            this.logTimeColor = Color.parseColor(logTimeColor);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            this.logTimeColor = Color.BLACK;
+        }
     }
 
 

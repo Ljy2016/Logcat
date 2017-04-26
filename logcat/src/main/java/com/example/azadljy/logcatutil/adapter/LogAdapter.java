@@ -10,6 +10,7 @@ import com.example.azadljy.logcatutil.databinding.LogitemBinding;
 import com.example.azadljy.logcatutil.model.LogModel;
 
 import android.support.v7.util.DiffUtil;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +21,6 @@ import java.util.List;
  */
 
 public abstract class LogAdapter extends RecyclerView.Adapter<LogViewHolder> {
-
     private List<LogModel> logModels;
     List<LogitemBinding> logitemBindings;
 
@@ -59,25 +59,4 @@ public abstract class LogAdapter extends RecyclerView.Adapter<LogViewHolder> {
         return logModels.size();
     }
 
-    public void update(List<LogModel> newLogModels) {
-        final LogModelDiffCallback diffCallback = new LogModelDiffCallback(this.logModels, newLogModels);
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
-        this.logModels.clear();
-        this.logModels.addAll(newLogModels);
-        diffResult.dispatchUpdatesTo(this);
-    }
-
-    public void update1(DiffUtil.DiffResult diffResult) {
-
-        diffResult.dispatchUpdatesTo(this);
-    }
-
-    //设置是否显示日志的时间信息
-    public void setDispalyLogTime(boolean dispalyLogTime) {
-        for (LogitemBinding binding : logitemBindings) {
-            if (binding != null) {
-                binding.setIsDisplayTime(dispalyLogTime);
-            }
-        }
-    }
 }

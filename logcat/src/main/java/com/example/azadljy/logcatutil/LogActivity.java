@@ -9,6 +9,7 @@ import android.widget.Spinner;
 
 import com.example.azadljy.logcatutil.adapter.LogAdapter;
 import com.example.azadljy.logcatutil.databinding.ActivityLogBinding;
+import com.example.azadljy.logcatutil.model.LogModel;
 import com.example.azadljy.logcatutil.model.LogcatViewModel;
 
 
@@ -17,11 +18,10 @@ import com.example.azadljy.logcatutil.model.LogcatViewModel;
  * 邮箱：enjoy_azad@sina.com
  */
 
-public class LogActivity extends AppCompatActivity {
+public class LogActivity extends AppCompatActivity implements LogcatViewModel.LogManager {
     private RecyclerView recyclerView;
     private LogAdapter adapter;
     private Spinner spinner;
-    boolean isDisplayLogTime;
     LogcatViewModel logcatViewModel;
 
     @Override
@@ -32,9 +32,9 @@ public class LogActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.rl_showlog);
         spinner = (Spinner) findViewById(R.id.sp_logType);
         logcatViewModel = new LogcatViewModel(recyclerView, this, spinner);
+        logcatViewModel.setManager(this);
         adapter = logcatViewModel.getAdapter();
         logBinding.setLogcatViewModel(logcatViewModel);
-        adapter.setDispalyLogTime(isDisplayLogTime);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setLayoutAnimation(null);
@@ -47,4 +47,35 @@ public class LogActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
+    public static String currentColor = "#000000";
+
+    @Override
+    public void manage(String log, LogModel model) {
+        if (log.contains("V/")) {
+            currentColor = "#000000";
+        }
+        if (log.contains("D/")) {
+            currentColor = "#3cba54";
+        }
+        if (log.contains("I/")) {
+            currentColor = "#4885ed";
+        }
+        if (log.contains("W/")) {
+            currentColor = "#f4c20d";
+        }
+        if (log.contains("E/")) {
+            currentColor = "#db3236";
+        }
+        if (log.contains("天冷涂的蜡")) {
+            model.setSpecialInfo(true);
+            currentColor = "#00FFFF";
+        }
+        if (("MyCommand").equals(LogcatViewModel.currentLogCommand)) {
+            String time = log.substring(6, 14);
+            model.setLogTime(time);
+            model.setLogContent(log.substring(log.indexOf("):") + 2));
+        }
+        model.setLogColor(currentColor);
+
+    }
 }
