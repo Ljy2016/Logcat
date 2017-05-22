@@ -11,8 +11,8 @@ import android.view.ViewPropertyAnimator;
 import android.view.animation.Interpolator;
 
 /**
- * 作者：Ljy on 2017/4/12.
- * 功能：我的——我的资料
+ * behavior control the fab
+ *
  */
 
 public class MyFabBehavior extends CoordinatorLayout.Behavior<View> {

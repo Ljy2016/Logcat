@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">logcat-for-shoppler</string>
+    <string name="app_name">logcat</string>
     <string name="show_time">显示时间</string>
     <string name="hide_time">隐藏时间</string>
 </resources>
